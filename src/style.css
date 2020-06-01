@@ -1,13 +1,3 @@
-body {
-    height: 100%;
-    margin: 0;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    /*font-family:'Muli', sans-serif;*/
-    font-family: 'Muli', sans-serif;
-    background-image: linear-gradient(white 30%, rgb(136, 133, 133));
-}
-
 .about-info {
     font-size: 18px;
 }
@@ -16,17 +6,8 @@ body {
     max-height: 100%; 
 }
 
-h2 {
-    font-weight: 300;
-}
-
 a {
     color: black;
-    font-weight: 275;
-}
-
-.logoText {
-    font-weight: lighter;
 }
 
 .vid-con {

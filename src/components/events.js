@@ -1,9 +1,152 @@
 import React, { Component } from "react";
+import EventCarousel from "./eventCarousel";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
+  Card,
+  CardBody,
+  CardHeader,
+  Row,
+  Col,
+} from "reactstrap";
+import TICKETS from "../shared/tickets";
+import EventCard from "./eventCard";
 
 class Events extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggleModal = this.toggleModal.bind(this);
+    this.clearCart = this.clearCart.bind(this);
+    this.lessTicket = this.lessTicket.bind(this);
+
+    this.state = {
+      isModalOpen: false,
+      tickets: TICKETS,
+      cart: [],
+    };
+  }
+
+  toggleModal() {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+    });
+  }
+  clearCart() {
+    this.setState({
+      cart: [],
+    });
+  }
+
+  addTicket(ticket) {
+    const ticketToCart = this.state.cart.filter((t) => t.id === ticket.id);
+
+    if (ticketToCart.length > 0) {
+      const notCartedTicket = this.state.cart.filter((t) => t.id !== ticket.id);
+      const updatedQty = {
+        ...ticketToCart[0],
+        units: ticketToCart[0].units + 1,
+      };
+
+      this.setState({
+        cart: [...notCartedTicket, updatedQty],
+      });
+    } else {
+      const newTicket = ticket;
+      newTicket.units = 1;
+      this.setState({
+        cart: [...this.state.cart, newTicket],
+      });
+    }
+  }
+
+  lessTicket(ticket) {
+    const ticketToCart = this.state.cart.filter((t) => t.id === ticket.id);
+
+    if (ticketToCart.length > 0) {
+      const notCartedTicket = this.state.cart.filter((t) => t.id !== ticket.id);
+      const updatedQty = {
+        ...ticketToCart[0],
+        units: ticketToCart[0].units - 1,
+      };
+      this.setState({
+        cart: [...notCartedTicket, updatedQty],
+      });
+    }
+  }
+
+  cartContents() {
+    const emptyCart = <h4 style={{margin: 15, fontWeight: "lighter"}}>
+Add tickets to continue with purchase.
+    </h4>
+    const cartTickets = this.state.cart.map((t) => (
+      <CardBody>
+        <Row>
+          <Col style={{ color: "black" }}>
+            <h4 style={{ color: "black" }}>{t.name}</h4>
+            <h5>{t.location}</h5>
+            <p>${t.price * t.units}</p>
+            <p>Qty: {t.units}</p>
+          </Col>
+          <Button
+            className="ticketBtn"
+            size="sm"
+            color="secondary"
+            onClick={() => this.addTicket(t)}
+          >
+            Add
+          </Button>
+          <Button
+            outline
+            size="sm"
+            color="secondary"
+            onClick={() => this.lessTicket(t)}
+          >
+            Delete
+          </Button>
+        </Row>
+      </CardBody>
+    ));
+    if (cartTickets.length > 0) {
+      return cartTickets;
+    } else {
+      return emptyCart;
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
+        <Modal
+          isOpen={this.state.isModalOpen}
+          toggle={this.toggleModal}
+          centered
+        >
+          <ModalHeader>
+            <div>
+              <h5 className="btn modal-close" onClick={this.toggleModal}>
+                Close
+              </h5>
+            </div>
+          </ModalHeader>
+          <ModalBody>
+            <Card>
+              <CardHeader style={{ color: "gray" }}>
+                <h2>Purchase Tickets</h2>
+              </CardHeader>
+              <div>{this.cartContents()}</div>
+            </Card>
+          </ModalBody>
+          <ModalFooter>
+            <div>
+              <h5 className="btn modal-close" onClick={this.clearCart}>Empty Cart</h5>
+            </div>
+          </ModalFooter>
+        </Modal>
+
         <div className="container">
           <div className="row align-items-center">
             <div className="col-sm-6 pb-2">
@@ -17,123 +160,25 @@ class Events extends Component {
                   assumenda iste.
                 </p>
               </div>
+
               <h3>Upcoming Events</h3>
+
               <div className="card eventCard p-4 intro">
-                <div className="row">
-                  <div className="col-sm-9 ml-2 p-1">
-                    <h6>
-                      - Modern Cats Round 1 @
-                      <a href="https://spectrumdance.org/" target="_blank">
-                        {" "}
-                        Shake Your Booty Place
-                      </a>
-                    </h6>
-                  </div>
-                  <div className="col">
-                    <a
-                      className="btn btn-sm ticketBtn rounded-pill"
-                      href="https://www.brownpapertickets.com/browse.html"
-                      target="_blank"
-                    >
-                      Tickets
-                    </a>
-                  </div>
-                  <div className="col-sm-9 ml-2 p-1">
-                    <h6>
-                      - Modern Cats Round 2 @
-                      <a href="http://velocitydancecenter.org/" target="_blank">
-                        {" "}
-                        Shake Your Face Place
-                      </a>
-                    </h6>
-                  </div>
-                  <div className="col">
-                    <a
-                      className="btn btn-sm ticketBtn rounded-pill"
-                      href="https://www.brownpapertickets.com/browse.html"
-                      target="_blank"
-                    >
-                      Tickets
-                    </a>
-                  </div>
-                </div>
+                {this.state.tickets.map((ticket) => (
+                  <EventCard
+                    key={ticket.id}
+                    {...ticket}
+                    addTicket={this.addTicket.bind(this)}
+                  />
+                ))}
+                <Button style={{marginTop: 10}}className="ticketBtn" onClick={this.toggleModal}>Checkout</Button>
               </div>
             </div>
-
             <div className="col-sm-6">
               <div className="container pt-4">
-                <div
-                  className="carousel slide carousel-fade gal-vid rounded intro"
-                  id="project-carousel"
-                  data-ride="carousel"
-                >
+                <div className="carousel-fade gal-vid2 rounded intro">
                   <div className="carousel-inner danceCat vid-prev">
-                    <div className="carousel-item active">
-                      <img
-                        className="img-fluid"
-                        src="https://i.kym-cdn.com/photos/images/original/001/000/072/6cd.jpg"
-                      />
-                    </div>
-                    <div className="carousel-item">
-                      <img
-                        className="img-fluid"
-                        src="https://static.boredpanda.com/blog/wp-content/uploads/2018/11/funny-dancing-cats-11-5be421492f1ca__700.jpg"
-                      />
-                    </div>
-                    <div className="carousel-item">
-                      <img
-                        className="img-fluid"
-                        src="https://static.boredpanda.com/blog/wp-content/uploads/2018/11/funny-dancing-cats-17-5be4246f5e16f__700.jpg"
-                      />
-                    </div>
-                    <div className="carousel-item">
-                      <img
-                        className="img-fluid"
-                        src="https://i.forfun.com/jjjrbdl6.jpeg"
-                      />
-                    </div>
-                    <div className="carousel-item">
-                      <img
-                        className="img-fluid"
-                        src="https://interlude-cdn-blob-prod.azureedge.net/interlude-blob-storage-prod/2018/09/dancing-cat.jpg"
-                      />
-                    </div>
-                    <div className="carousel-item">
-                      <img
-                        className="img-fluid"
-                        src="https://i.pinimg.com/originals/77/12/a3/7712a3e1c365f06077a854f3252dba5a.jpg"
-                      />
-                    </div>
-                    <div className="carousel-item">
-                      <img
-                        className="img-fluid"
-                        src="https://i.imgflip.com/1r86cg.jpg"
-                      />
-                    </div>
-                    <a
-                      className="carousel-control-prev"
-                      href="#project-carousel"
-                      role="button"
-                      data-slide="prev"
-                    >
-                      <span
-                        className="carousel-control-prev-icon"
-                        aria-hidden="true"
-                      ></span>
-                      <span className="sr-only">Previous</span>
-                    </a>
-                    <a
-                      className="carousel-control-next"
-                      href="#project-carousel"
-                      role="button"
-                      data-slide="next"
-                    >
-                      <span
-                        className="carousel-control-next-icon"
-                        aria-hidden="true"
-                      ></span>
-                      <span className="sr-only">Next</span>
-                    </a>
+                    <EventCarousel />
                   </div>
                 </div>
               </div>

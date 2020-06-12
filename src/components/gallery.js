@@ -1,29 +1,41 @@
 import React, { Component } from "react";
 import {
-  Button,
   Modal,
   ModalHeader,
-  ModalFooter,
   ModalBody,
-  Carousel,
-  CarouselItem,
-  CarouselControl,
-  CarouselIndicators,
   Card,
   Row,
   Col,
   Container,
 } from "reactstrap";
+import CatCarousel from "./catCarousel";
+import VidCarousel from "./vidCarousel";
 
 class Gallery extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggleModal = this.toggleModal.bind(this);
+
+    this.state = {
+      isModalOpen: false,
+    };
+  }
+
+  toggleModal() {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+    });
+  }
+
   render() {
     return (
       <React.Fragment>
         <Container>
-          <Row className="justify-content-around">
-            <Col style={{ paddingTop: 0 }}>
+          <Row>
+            <Col style={{ paddingTop: 8 }}>
               <Card
-                style={{ padding: 10, marginBottom: 25, fontSize: 14 }}
+                style={{ padding: 10, fontSize: 16 }}
                 className="gal-card intro"
               >
                 <p>
@@ -43,22 +55,22 @@ class Gallery extends Component {
               </Card>
             </Col>
 
-            <div className="col-md-5 vid-car-container pt-2">
-              <div
-                id="vidCar"
-                className="carousel slide carousel-fade intro"
-                data-ride="carousel"
-                data-interval="false"
-              ></div>
+            <div className="col-md-5 pt-2">
+              <div className="vidCar carousel-fade intro">
+                <div className="carousel-inner">
+                  <VidCarousel />
+                </div>
+              </div>
             </div>
           </Row>
         </Container>
 
         <Container>
           <Row>
-            <Col>
+            <Col onClick={this.toggleModal}>
               <div className="rounded hover-shadow cat-overlay">
                 <img
+                  alt=""
                   className="img-prev"
                   src="https://images.unsplash.com/photo-1498100152307-ce63fd6c5424?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1000&q=80"
                 />
@@ -69,9 +81,10 @@ class Gallery extends Component {
                 </div>
               </div>
             </Col>
-            <Col>
+            <Col onClick={this.toggleModal}>
               <div className="rounded hover-shadow cat-overlay">
                 <img
+                  alt=""
                   className="img-prev"
                   src="https://images.unsplash.com/photo-1503431128871-cd250803fa41?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
                 />
@@ -80,9 +93,10 @@ class Gallery extends Component {
                 </div>
               </div>
             </Col>
-            <Col>
+            <Col onClick={this.toggleModal}>
               <div className="rounded hover-shadow cat-overlay">
                 <img
+                  alt=""
                   className="img-prev"
                   src="https://thenypost.files.wordpress.com/2019/12/cat.jpg?quality=80&strip=all"
                 />
@@ -93,14 +107,19 @@ class Gallery extends Component {
             </Col>
           </Row>
         </Container>
-        <Modal>
+        <Modal
+          isOpen={this.state.isModalOpen}
+          toggle={this.toggleModal}
+          centered
+        >
           <ModalHeader>
             <div>
-              <h5></h5>
-              <Button />
+              <h5 className="btn modal-close" onClick={this.toggleModal}>
+                Close
+              </h5>
             </div>
             <ModalBody>
-              <Carousel></Carousel>
+              <CatCarousel />
             </ModalBody>
           </ModalHeader>
         </Modal>

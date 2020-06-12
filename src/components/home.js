@@ -8,6 +8,7 @@ class Home extends Component {
           <div>
             <div className="embed-responsive embed-responsive-16by9 intro">
               <iframe
+                title="home vid"
                 className="embed-responsive-item"
                 src="https://www.youtube.com/embed/rmQ_8KyXQpc"
                 allowfullscreen="allowfullscreen"

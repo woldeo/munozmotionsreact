@@ -1,28 +1,34 @@
 import React, { Component } from "react";
+import linkedIn from '../images/linkedIn.svg';
+import fb from '../images/fb.svg';
+import twit from '../images/twit.svg';
+import insta from '../images/insta.svg';
+import pp from '../images/pp.svg';
 
 class Contact extends Component {
+
   render() {
     return (
       <React.Fragment>
         <div className="container card eventCard p-2 intro">
           <div className="row">
             <div className="col-12 contact-info">
-              <h3>Mu&#241oz Motions</h3>
+              <h3>Mu&#241;oz Motions</h3>
               <h4>Seattle, WA</h4>
               <div className="info-links pb-2">
                 <a href="https://www.facebook.com/" target="_blank">
-                  <i className="fa fa-inverse fa-2x fa-facebook-square"></i>
-                </a>
+                  <img className="svg" src={fb}/>
+                  </a>
                 <a href="https://twitter.com/explore" target="_blank">
-                  <i className="fa fa-inverse fa-2x fa-twitter-square"></i>
+                <img className="svg" src={twit}/>
                 </a>
                 <a href="https://linkedin.com" target="_blank">
-                  <i className="fa fa-2x fa-inverse fa-linkedin-square"></i>
+                <img className="svg" src={linkedIn}/>
                 </a>
                 <a href="https://instagram.com" target="_blank">
-                  <i className="fa fa-2x fa-inverse fa-instagram"></i>
+                <img className="svg" src={insta}/>
                 </a>
-                
+                <br />
                   <a href="mailto:dm@munozmotions.com" className="emailAdd">
                     dm@munozmotions.com
                   </a>
@@ -40,7 +46,7 @@ class Contact extends Component {
                   and make a donation today.
                 </p>
                 <a href="https://paypal.com" target="_blank">
-                  <i className="fa fa-2x fa-inverse fa-cc-paypal"></i>
+                <img style={{width: 100}}className="svg" src={pp} />
                 </a>
               </div>
             </div>

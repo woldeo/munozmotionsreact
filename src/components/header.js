@@ -3,6 +3,7 @@ import { Jumbotron } from "reactstrap";
 import logo from "../images/logo.PNG";
 import nav from "../images/nav.svg";
 import { Row, Container } from "reactstrap";
+import { Link } from "react-router-dom";
 
 class Header extends Component {
   constructor(props) {
@@ -36,32 +37,33 @@ class Header extends Component {
         >
           <div className="overlay-content">
             <div>
-              <a className="nav-link" href="/">
+              <Link className="nav-link" to="/home">
                 Home
-              </a>
-              <a className="nav-link" href="/">
+              </Link>
+              <Link className="nav-link" to="/about">
                 About
-              </a>
-              <a className="nav-link" href="/">
+              </Link>
+              <Link className="nav-link" to="/gallery">
                 Gallery
-              </a>
-              <a className="nav-link" href="/">
+              </Link>
+              <Link className="nav-link" to="/events">
                 Events
-              </a>
-              <a className="nav-link" href="/">
+              </Link>
+              <Link className="nav-link" to="/contact">
                 Contact
-              </a>
+              </Link>
             </div>
           </div>
         </div>
         <Jumbotron>
           <Container fluid>
             <Row>
-              <div>
+              <Link to="/home">
                 <img className="img-fluid logo" src={logo} alt="Logo" />
-              </div>
+              </Link>
               <div className="col mr-auto pt-4 ">
                 <h2>Mu&#241;oz Motions</h2>
+                <h5>{this.state.title}</h5>
               </div>
               <div className="col-1 pt-4">
                 <img

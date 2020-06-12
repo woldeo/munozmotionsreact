@@ -5,9 +5,11 @@ import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-social/bootstrap-social.css";
 import "typeface-caveat";
-import "typeface-muli"
-import "typeface-open-sans"
+import "typeface-muli";
+import "typeface-open-sans";
 import App from "./App";
+import "./App.css";
+
 
 ReactDOM.render(
   <React.StrictMode>

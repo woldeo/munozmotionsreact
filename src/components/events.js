@@ -42,46 +42,54 @@ class Events extends Component {
   }
 
   addTicket(ticket) {
-    const ticketToCart = this.state.cart.filter((t) => t.id === ticket.id);
+    const totalCart = this.state.cart;
+    const ticketInCart = totalCart.filter((t) => t.id === ticket.id);
+    const ticketToCart = totalCart.filter((t) => t.id !== ticket.id);
 
-    if (ticketToCart.length > 0) {
-      const notCartedTicket = this.state.cart.filter((t) => t.id !== ticket.id);
-      const updatedQty = {
-        ...ticketToCart[0],
-        units: ticketToCart[0].units + 1,
+    if (ticketInCart.length > 0) {
+      const qty = {
+        ...ticketInCart[0],
+        units: ticketInCart[0].units + 1,
       };
 
       this.setState({
-        cart: [...notCartedTicket, updatedQty],
+        cart: [...ticketToCart, qty],
       });
     } else {
       const newTicket = ticket;
       newTicket.units = 1;
       this.setState({
-        cart: [...this.state.cart, newTicket],
+        cart: [...totalCart, newTicket],
       });
     }
   }
 
   lessTicket(ticket) {
-    const ticketToCart = this.state.cart.filter((t) => t.id === ticket.id);
+    const totalCart = this.state.cart;
+    const ticketInCart = totalCart.filter((t) => t.id === ticket.id);
+    const ticketToCart = totalCart.filter((t) => t.id !== ticket.id);
 
-    if (ticketToCart.length > 0) {
-      const notCartedTicket = this.state.cart.filter((t) => t.id !== ticket.id);
-      const updatedQty = {
-        ...ticketToCart[0],
-        units: ticketToCart[0].units - 1,
-      };
+    const qty = {
+      ...ticketInCart[0],
+      units: ticketInCart[0].units - 1,
+    };
+
+    if (qty.units >= 0) {
       this.setState({
-        cart: [...notCartedTicket, updatedQty],
+        cart: [...ticketToCart, qty],
       });
+    } else if ((qty.units = 0)) {
+      console.log("quantity", qty.units);
     }
   }
 
   cartContents() {
-    const emptyCart = <h4 style={{margin: 15, fontWeight: "lighter"}}>
-Add tickets to continue with purchase.
-    </h4>
+    console.log(this.state.cart);
+    const emptyCart = (
+      <h4 style={{ margin: 15, fontWeight: "lighter" }}>
+        Add tickets to continue with purchase.
+      </h4>
+    );
     const cartTickets = this.state.cart.map((t) => (
       <CardBody>
         <Row>
@@ -142,7 +150,9 @@ Add tickets to continue with purchase.
           </ModalBody>
           <ModalFooter>
             <div>
-              <h5 className="btn modal-close" onClick={this.clearCart}>Empty Cart</h5>
+              <h5 className="btn modal-close" onClick={this.clearCart}>
+                Empty Cart
+              </h5>
             </div>
           </ModalFooter>
         </Modal>
@@ -171,7 +181,13 @@ Add tickets to continue with purchase.
                     addTicket={this.addTicket.bind(this)}
                   />
                 ))}
-                <Button style={{marginTop: 10}}className="ticketBtn" onClick={this.toggleModal}>Checkout</Button>
+                <Button
+                  style={{ marginTop: 10 }}
+                  className="ticketBtn"
+                  onClick={this.toggleModal}
+                >
+                  Checkout
+                </Button>
               </div>
             </div>
             <div className="col-sm-6">

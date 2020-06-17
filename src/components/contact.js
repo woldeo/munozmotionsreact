@@ -74,15 +74,12 @@ class Contact extends Component {
                     centered
                   >
                     <ModalHeader>
-                      <div>
-                        <h5
-                          className="btn modal-close"
-                          onClick={this.toggleModal}
-                          
-                        >
-                          Close
-                        </h5>
-                      </div>
+                      <button
+                        className="btn modal-close"
+                        onClick={this.toggleModal}
+                      >
+                        Close
+                      </button>
                     </ModalHeader>
                     <ModalBody>
                       <ContactForm />

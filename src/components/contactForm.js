@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Form, FormGroup, FormFeedback, Label, Input } from "reactstrap";
+import { Form, FormGroup, FormFeedback, Label, Input } from "reactstrap";
 
 
 class ContactForm extends React.Component {
@@ -54,7 +54,7 @@ class ContactForm extends React.Component {
     }
 
     if (this.state.touched.email && !email.includes("@")) {
-      errors.email = "Email should contain a @";
+      errors.email = "Email should contain an @";
     }
 
     return errors;

@@ -10,12 +10,6 @@ import {
   Modal,
   ModalBody,
   ModalHeader,
-  ModalFooter,
-  Card,
-  CardBody,
-  CardHeader,
-  Row,
-  Col,
 } from "reactstrap";
 
 class Contact extends Component {

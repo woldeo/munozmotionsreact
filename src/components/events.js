@@ -13,7 +13,52 @@ import {
   Col,
 } from "reactstrap";
 import TICKETS from "../shared/tickets";
-import EventCard from "./eventCard";
+
+
+
+const EventCard = ({ id, name, location, price, title, addTicket }) => {
+  return (
+    <div id={id}>
+      <div className="row">
+        <div className="col-sm-9 ml-2 p-1">
+          <h6>
+            {name} @ {location}
+          </h6>
+        </div>
+      </div>
+      <div className="row">
+        <select
+          style={{
+            borderRadius: 5,
+            marginTop: 5,
+            marginBottom: 12,
+            marginLeft: 15,
+          }}
+          className="ticketBtn"
+          title="Qty"
+        >
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>{" "}
+        <Button
+          type="submit"
+          onClick={() => addTicket({ id, name, location, price, title })}
+          style={{ marginLeft: 15, marginTop: 5, marginBottom: 10 }}
+          className="btn ticketBtn"
+        >
+          Add Tickets
+        </Button>
+        <div className="col" style={{ marginTop: 10 }}>
+          {" "}
+          ${price} each
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 class Events extends Component {
   constructor(props) {
@@ -22,6 +67,7 @@ class Events extends Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.clearCart = this.clearCart.bind(this);
     this.lessTicket = this.lessTicket.bind(this);
+    this.addTicket = this.addTicket.bind(this);
 
     this.state = {
       isModalOpen: false,
@@ -43,17 +89,17 @@ class Events extends Component {
 
   addTicket(ticket) {
     const totalCart = this.state.cart;
-    const ticketInCart = totalCart.filter((t) => t.id === ticket.id);
-    const ticketToCart = totalCart.filter((t) => t.id !== ticket.id);
+    const ticketsInCart = totalCart.filter((t) => t.id === ticket.id);
+    const ticketsNotInCart = totalCart.filter((t) => t.id !== ticket.id);
 
-    if (ticketInCart.length > 0) {
+    if (ticketsInCart.length > 0) {
       const qty = {
-        ...ticketInCart[0],
-        units: ticketInCart[0].units + 1,
+        ...ticketsInCart[0],
+        units: ticketsInCart[0].units + 1,
       };
 
       this.setState({
-        cart: [...ticketToCart, qty],
+        cart: [...ticketsNotInCart, qty],
       });
     } else {
       const newTicket = ticket;
@@ -66,17 +112,17 @@ class Events extends Component {
 
   lessTicket(ticket) {
     const totalCart = this.state.cart;
-    const ticketInCart = totalCart.filter((t) => t.id === ticket.id);
-    const ticketToCart = totalCart.filter((t) => t.id !== ticket.id);
+    const ticketsInCart = totalCart.filter((t) => t.id === ticket.id);
+    const ticketsNotInCart = totalCart.filter((t) => t.id !== ticket.id);
 
     const qty = {
-      ...ticketInCart[0],
-      units: ticketInCart[0].units - 1,
+      ...ticketsInCart[0],
+      units: ticketsInCart[0].units - 1,
     };
 
     if (qty.units >= 0) {
       this.setState({
-        cart: [...ticketToCart, qty],
+        cart: [...ticketsNotInCart, qty],
       });
     } else if ((qty.units = 0)) {
       console.log("quantity", qty.units);
@@ -141,8 +187,8 @@ class Events extends Component {
             </div>
           </ModalHeader>
           <ModalBody>
-            <Card>
-              <CardHeader style={{ color: "gray" }}>
+            <Card style={{outline: 0 }}>
+              <CardHeader style={{ backgroundColor: "black", color: 'white' }}>
                 <h2>Purchase Tickets</h2>
               </CardHeader>
               <div>{this.cartContents()}</div>
@@ -178,7 +224,7 @@ class Events extends Component {
                   <EventCard
                     key={ticket.id}
                     {...ticket}
-                    addTicket={this.addTicket.bind(this)}
+                    addTicket={this.addTicket}
                   />
                 ))}
                 <Button
